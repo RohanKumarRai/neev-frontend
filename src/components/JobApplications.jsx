@@ -46,8 +46,13 @@ export default function JobApplications() {
       ) : (
         apps.map(app => (
           <div key={app.id} className="job-card">
-            <p><b>Worker ID:</b> {app.workerId}</p>
+            
             <p><b>Message:</b> {app.message || "—"}</p>
+            <p><b>Name:</b> {app.workerName}</p>
+            <p><b>Skill:</b> {app.skillCategory}</p>
+            <p><b>Location:</b> {app.location}</p>
+            <p><b>Experience:</b> {app.experienceYears} years</p>
+            <p><b>Rate:</b> ₹{app.dailyRate}</p>
             <p><b>Status:</b> {app.status}</p>
 
             {app.status === "PENDING" && (
