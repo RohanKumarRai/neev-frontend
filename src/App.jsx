@@ -21,6 +21,8 @@ import Profile from "./components/Profile";
 import CreateJob from "./components/CreateJob";
 import EmployerJobs from "./components/EmployerJobs";
 import JobApplications from "./components/JobApplications.jsx";
+import WorkerJobs from "./components/WorkerJobs";
+
 
 
 
@@ -39,6 +41,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/worker/jobs" element={<WorkerJobs />} />
+
 
         {/* ================= COMMON (AUTH) ================= */}
         <Route

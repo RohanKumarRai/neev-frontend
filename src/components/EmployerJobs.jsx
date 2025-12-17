@@ -14,11 +14,23 @@ export default function EmployerJobs() {
   async function fetchMyJobs() {
     try {
       const res = await api.get("/jobs/my"); // ✅ NO /api here
-      setJobs(res.data);
+
+      // ✅ STEP 5: Hide COMPLETED jobs from active list
+      setJobs(res.data.filter((j) => j.status !== "COMPLETED"));
     } catch (err) {
       console.error("Failed to load jobs", err);
     } finally {
       setLoading(false);
+    }
+  }
+
+  // ✅ Mark job as completed
+  async function completeJob(jobId) {
+    try {
+      await api.post(`/jobs/${jobId}/complete`);
+      fetchMyJobs(); // 🔄 refresh list
+    } catch {
+      alert("Failed to complete job");
     }
   }
 
@@ -29,19 +41,22 @@ export default function EmployerJobs() {
       <h2>My Job Postings</h2>
 
       {jobs.length === 0 ? (
-        <p>No jobs posted yet.</p>
+        <p>No active jobs.</p>
       ) : (
         jobs.map((job) => (
           <div key={job.id} className="job-card">
             <h3>{job.title}</h3>
             <p>{job.description}</p>
+
             <p>
               <b>Location:</b> {job.location}
             </p>
+
             <p>
               <b>Status:</b> {job.status}
             </p>
 
+            {/* View Applications */}
             <button
               onClick={() =>
                 navigate(`/employer/jobs/${job.id}/applications`)
@@ -50,6 +65,16 @@ export default function EmployerJobs() {
             >
               View Applications
             </button>
+
+            {/* Mark Completed (only if ASSIGNED) */}
+            {job.status === "ASSIGNED" && (
+              <button
+                onClick={() => completeJob(job.id)}
+                style={{ marginTop: 8, marginLeft: 8 }}
+              >
+                Mark Completed
+              </button>
+            )}
           </div>
         ))
       )}

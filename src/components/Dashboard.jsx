@@ -37,25 +37,26 @@ export default function Dashboard() {
 
         <div className="dashboard-grid">
           {/* ================= WORKER ================= */}
-          {isWorker && (
-            <>
-              <div
-                className="dashboard-tile"
-                onClick={() => navigate("/jobs")}
-              >
-                <h3>📜 Browse Jobs</h3>
-                <p>Find and apply for available jobs.</p>
-              </div>
+          {role === "WORKER" && (
+       <>
+       <div className="card">
+       <h3>Browse Jobs</h3>
+       <Link to="/jobs">Browse Jobs</Link>
+       </div>
 
-              <div
-                className="dashboard-tile"
-                onClick={() => navigate("/profile")}
-              >
-                <h3>📝 Update Profile</h3>
-                <p>Manage your skills, location, and contact information.</p>
-              </div>
-            </>
-          )}
+     <div className="card">
+      <h3>My Jobs</h3>
+      <p>View jobs assigned to you</p>
+      <Link to="/worker/jobs">My Assigned Jobs</Link>
+    </div>
+
+    <div className="card">
+      <h3>Update Profile</h3>
+      <Link to="/profile">Update Profile</Link>
+    </div>
+  </>
+)}
+
 
           {/* ================= EMPLOYER ================= */}
           {isEmployer && (
