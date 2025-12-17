@@ -20,10 +20,10 @@ import Profile from "./components/Profile";
 // Employer
 import CreateJob from "./components/CreateJob";
 import EmployerJobs from "./components/EmployerJobs";
-import JobApplications from "./components/JobApplications";
+import JobApplications from "./components/JobApplications.jsx";
 
-//route for applications page
-import JobApplications from "./components/JobApplications";
+
+
 
 
 // Home
