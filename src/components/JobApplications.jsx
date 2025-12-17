@@ -1,60 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-
-const API = 'http://localhost:8080';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import api from "../services/api";
 
 export default function JobApplications() {
   const { jobId } = useParams();
-  const { token } = useAuth();
   const [apps, setApps] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`${API}/api/jobs/${jobId}/applications`, {
-      headers: { Authorization: 'Bearer ' + token }
-    })
-      .then(res => res.json())
-      .then(setApps)
-      .catch(console.error);
-  }, [jobId, token]);
+    fetchApplications();
+  }, [jobId]);
 
-  async function decide(appId, action) {
-    await fetch(`${API}/api/jobs/applications/${appId}/${action}`, {
-      method: 'POST',
-      headers: { Authorization: 'Bearer ' + token }
-    });
-
-    // refresh
-    setApps(apps.map(a =>
-      a.id === appId ? { ...a, status: action === 'accept' ? 'ACCEPTED' : 'REJECTED' } : a
-    ));
+  async function fetchApplications() {
+    try {
+      const res = await api.get(`/jobs/${jobId}/applications`);
+      setApps(res.data);
+    } catch (err) {
+      setError("Failed to load applications");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
 
+  async function decide(appId, accept) {
+    try {
+      const action = accept ? "accept" : "reject";
+      await api.post(`/jobs/applications/${appId}/${action}`);
+      fetchApplications(); // refresh list
+    } catch (err) {
+      alert("Action failed");
+    }
+  }
+
+  if (loading) return <p>Loading applications...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+
   return (
-    <div className="center">
-      <div className="card" style={{ width: 600 }}>
-        <h3>Applications</h3>
+    <div className="card">
+      <h2>Job Applications</h2>
 
-        {apps.length === 0 && <p>No applications yet.</p>}
-
-        {apps.map(app => (
+      {apps.length === 0 ? (
+        <p>No applications yet.</p>
+      ) : (
+        apps.map(app => (
           <div key={app.id} className="job-card">
-            <p>Worker ID: {app.workerId}</p>
-            <p>Status: <b>{app.status}</b></p>
+            <p><b>Worker ID:</b> {app.workerId}</p>
+            <p><b>Message:</b> {app.message || "—"}</p>
+            <p><b>Status:</b> {app.status}</p>
 
-            {app.status === 'PENDING' && (
+            {app.status === "PENDING" && (
               <>
-                <button className="btn" onClick={() => decide(app.id, 'accept')}>
+                <button onClick={() => decide(app.id, true)}>
                   Accept
                 </button>
-                <button className="btn btn-secondary" onClick={() => decide(app.id, 'reject')}>
+                <button onClick={() => decide(app.id, false)}>
                   Reject
                 </button>
               </>
             )}
           </div>
-        ))}
-      </div>
+        ))
+      )}
     </div>
   );
 }

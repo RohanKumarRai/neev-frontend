@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 export default function EmployerJobs() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchMyJobs();
@@ -29,12 +31,25 @@ export default function EmployerJobs() {
       {jobs.length === 0 ? (
         <p>No jobs posted yet.</p>
       ) : (
-        jobs.map(job => (
+        jobs.map((job) => (
           <div key={job.id} className="job-card">
             <h3>{job.title}</h3>
             <p>{job.description}</p>
-            <p><b>Location:</b> {job.location}</p>
-            <p><b>Status:</b> {job.status}</p>
+            <p>
+              <b>Location:</b> {job.location}
+            </p>
+            <p>
+              <b>Status:</b> {job.status}
+            </p>
+
+            {/* ✅ NEW BUTTON */}
+            <button
+              onClick={() =>
+                navigate(`/employer/jobs/${job.id}/applications`)
+              }
+            >
+              View Applications
+            </button>
           </div>
         ))
       )}

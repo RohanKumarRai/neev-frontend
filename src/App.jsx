@@ -22,6 +22,10 @@ import CreateJob from "./components/CreateJob";
 import EmployerJobs from "./components/EmployerJobs";
 import JobApplications from "./components/JobApplications";
 
+//route for applications page
+import JobApplications from "./components/JobApplications";
+
+
 // Home
 const Home = () => <h1>Welcome to NEEV!</h1>;
 
@@ -64,6 +68,18 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {/* ================= route for applications page ================= */}
+        <Route
+        path="/employer/jobs/:jobId/applications"
+        element={
+        <ProtectedRoute>
+        <JobApplications />
+        </ProtectedRoute>
+      }
+    />
+
+
+
 
         {/* ================= EMPLOYER ================= */}
         <Route
