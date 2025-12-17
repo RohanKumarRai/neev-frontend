@@ -2,7 +2,9 @@
 
 import axios from "axios";
 
-// ✅ Railway backend base URL from .env
+// 🔹 Backend base URL from Vite environment
+// Example in .env:
+// VITE_API_URL=https://your-backend.up.railway.app
 const API_BASE_URL = import.meta.env.VITE_API_URL + "/api";
 
 const api = axios.create({
@@ -12,7 +14,7 @@ const api = axios.create({
   },
 });
 
-// ✅ Attach JWT token automatically
+// 🔹 Attach JWT token automatically to every request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -26,12 +28,15 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ✅ Optional global 401 handling
+// 🔹 Global response handler (401 = token expired / invalid)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      console.log("Unauthorized or token expired");
+      console.warn("Unauthorized or token expired");
+      // optional later:
+      // localStorage.removeItem("token");
+      // window.location.href = "/login";
     }
     return Promise.reject(error);
   }
