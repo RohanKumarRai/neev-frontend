@@ -1,37 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
-
-const API = import.meta.env.VITE_API_BASE_URL;
+import api from "../services/api";
 
 export default function EmployerJobs() {
-  const { authData } = useAuth();
-  const token = authData?.token;
-
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (token) {
-      fetchMyJobs();
-    }
-  }, [token]);
+    fetchMyJobs();
+  }, []);
 
   async function fetchMyJobs() {
     try {
-      const res = await fetch(`${API}/api/jobs/my`, {
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to load jobs");
-      }
-
-      const data = await res.json();
-      setJobs(data);
+      const res = await api.get("/jobs/my"); // ✅ NO /api here
+      setJobs(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Failed to load jobs", err);
     } finally {
       setLoading(false);
     }
