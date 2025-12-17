@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Dashboard() {
   const { authData, logout } = useAuth();
@@ -36,27 +36,29 @@ export default function Dashboard() {
         <hr style={{ margin: "20px 0" }} />
 
         <div className="dashboard-grid">
+
           {/* ================= WORKER ================= */}
-          {role === "WORKER" && (
-       <>
-       <div className="card">
-       <h3>Browse Jobs</h3>
-       <Link to="/jobs">Browse Jobs</Link>
-       </div>
+          {isWorker && (
+            <>
+              <div className="dashboard-tile">
+                <h3>🔍 Browse Jobs</h3>
+                <p>Find and apply for available jobs</p>
+                <Link to="/jobs">Browse Jobs</Link>
+              </div>
 
-     <div className="card">
-      <h3>My Jobs</h3>
-      <p>View jobs assigned to you</p>
-      <Link to="/worker/jobs">My Assigned Jobs</Link>
-    </div>
+              <div className="dashboard-tile">
+                <h3>🛠 My Jobs</h3>
+                <p>View jobs assigned to you</p>
+                <Link to="/worker/jobs">My Assigned Jobs</Link>
+              </div>
 
-    <div className="card">
-      <h3>Update Profile</h3>
-      <Link to="/profile">Update Profile</Link>
-    </div>
-  </>
-)}
-
+              <div className="dashboard-tile">
+                <h3>👤 Update Profile</h3>
+                <p>Manage your worker profile</p>
+                <Link to="/profile">Update Profile</Link>
+              </div>
+            </>
+          )}
 
           {/* ================= EMPLOYER ================= */}
           {isEmployer && (
