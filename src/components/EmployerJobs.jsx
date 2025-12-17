@@ -42,11 +42,11 @@ export default function EmployerJobs() {
               <b>Status:</b> {job.status}
             </p>
 
-            {/* ✅ NEW BUTTON */}
             <button
               onClick={() =>
                 navigate(`/employer/jobs/${job.id}/applications`)
               }
+              style={{ marginTop: 8 }}
             >
               View Applications
             </button>

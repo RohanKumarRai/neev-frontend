@@ -77,6 +77,15 @@ function App() {
         </ProtectedRoute>
       }
     />
+    <Route
+     path="/employer/jobs/:jobId/applications"
+     element={
+    <ProtectedRoute role="EMPLOYER">
+      <JobApplications />
+    </ProtectedRoute>
+    }
+  />
+
 
 
 
