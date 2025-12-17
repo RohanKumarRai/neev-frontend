@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-const API = "http://localhost:8080";
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function EmployerJobs() {
-  const { token } = useAuth();
+  const { authData } = useAuth();
+  const token = authData?.token;
+
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchMyJobs();
-  }, []);
+    if (token) {
+      fetchMyJobs();
+    }
+  }, [token]);
 
   async function fetchMyJobs() {
     try {
