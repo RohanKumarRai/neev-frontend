@@ -82,6 +82,19 @@ export default function Dashboard() {
           )}
         </div>
 
+        {/* ✅ EXTRA ROLE-BASED BUTTON (WORKER ONLY) */}
+        {user?.role === "ROLE_WORKER" && (
+          <>
+            <hr style={{ margin: "20px 0" }} />
+            <button
+              className="btn btn-secondary"
+              onClick={() => navigate("/worker/jobs")}
+            >
+              My Assigned Jobs
+            </button>
+          </>
+        )}
+
         <hr style={{ margin: "20px 0" }} />
 
         <button className="btn btn-secondary" onClick={handleLogout}>

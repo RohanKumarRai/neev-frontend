@@ -121,6 +121,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+        path="/worker/jobs"
+        element={
+          <ProtectedRoute>
+            <WorkerJobs />
+          </ProtectedRoute>
+        }
+      />
+
 
         {/* ================= 404 ================= */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
