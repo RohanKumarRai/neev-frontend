@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <header style={headerStyle}>
-      <Link to="/" style={logoStyle}>NEEV</Link>
+      <Link to="/" style={logoStyle}>monopsy</Link>
 
       <nav style={navStyle}>
         {isAuthenticated ? (

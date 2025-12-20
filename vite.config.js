@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg"],
       manifest: {
-        name: "Neev",
-        short_name: "Neev",
+        name: "monopsy",
+        short_name: "monopsy",
         description: "Local jobs. Trusted workers.",
         theme_color: "#2563eb",
         background_color: "#ffffff",
