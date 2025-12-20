@@ -44,29 +44,33 @@ export default function JobApplications() {
       {apps.length === 0 ? (
         <p>No applications yet.</p>
       ) : (
-        apps.map(app => (
-          <div key={app.id} className="job-card">
-            
-            <p><b>Message:</b> {app.message || "—"}</p>
-            <p><b>Name:</b> {app.workerName}</p>
-            <p><b>Skill:</b> {app.skillCategory}</p>
-            <p><b>Location:</b> {app.location}</p>
-            <p><b>Experience:</b> {app.experienceYears} years</p>
-            <p><b>Rate:</b> ₹{app.dailyRate}</p>
-            <p><b>Status:</b> {app.status}</p>
+        apps.map(app => {
+          // 🔍 TEMP DEBUG
+          console.log("APP OBJECT:", app);
 
-            {app.status === "PENDING" && (
-              <>
-                <button onClick={() => decide(app.id, true)}>
-                  Accept
-                </button>
-                <button onClick={() => decide(app.id, false)}>
-                  Reject
-                </button>
-              </>
-            )}
-          </div>
-        ))
+          return (
+            <div key={app.id} className="job-card">
+              <p><b>Message:</b> {app.message || "—"}</p>
+              <p><b>Name:</b> {app.workerName}</p>
+              <p><b>Skill:</b> {app.skillCategory}</p>
+              <p><b>Location:</b> {app.location}</p>
+              <p><b>Experience:</b> {app.experienceYears} years</p>
+              <p><b>Rate:</b> ₹{app.dailyRate}</p>
+              <p><b>Status:</b> {app.status}</p>
+
+              {app.status === "PENDING" && (
+                <>
+                  <button onClick={() => decide(app.id, true)}>
+                    Accept
+                  </button>
+                  <button onClick={() => decide(app.id, false)}>
+                    Reject
+                  </button>
+                </>
+              )}
+            </div>
+          );
+        })
       )}
     </div>
   );
