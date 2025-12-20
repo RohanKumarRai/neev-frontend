@@ -59,7 +59,7 @@ export default function Login() {
     return (
         <div className="center">
             <div className="card">
-                <div className="h1">Neev — Login</div>
+                <div className="h1">monopsy — Login</div>
                 
                 {error && <div className="alert err">{error}</div>}
 

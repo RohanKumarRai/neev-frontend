@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 
 // Core
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Auth
@@ -16,20 +17,20 @@ import Dashboard from "./components/Dashboard";
 // Worker
 import JobList from "./components/JobList";
 import Profile from "./components/Profile";
+import WorkerJobs from "./components/WorkerJobs";
 
 // Employer
 import CreateJob from "./components/CreateJob";
 import EmployerJobs from "./components/EmployerJobs";
-import JobApplications from "./components/JobApplications.jsx";
-import WorkerJobs from "./components/WorkerJobs";
-
-
-
-
-
+import JobApplications from "./components/JobApplications";
 
 // Home
-const Home = () => <h1>Welcome to NEEV!</h1>;
+const Home = () => (
+  <div style={{ textAlign: "center", marginTop: 40 }}>
+    <h1>Welcome to monopsy!</h1>
+    <h2>Find the best workers for your needs.</h2>
+  </div>
+);
 
 function App() {
   return (
@@ -41,8 +42,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/worker/jobs" element={<WorkerJobs />} />
-
 
         {/* ================= COMMON (AUTH) ================= */}
         <Route
@@ -72,27 +71,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* ================= route for applications page ================= */}
+
         <Route
-        path="/employer/jobs/:jobId/applications"
-        element={
-        <ProtectedRoute>
-        <JobApplications />
-        </ProtectedRoute>
-      }
-    />
-    <Route
-     path="/employer/jobs/:jobId/applications"
-     element={
-    <ProtectedRoute role="EMPLOYER">
-      <JobApplications />
-    </ProtectedRoute>
-    }
-  />
-
-
-
-
+          path="/worker/jobs"
+          element={
+            <ProtectedRoute>
+              <WorkerJobs />
+            </ProtectedRoute>
+          }
+        />
 
         {/* ================= EMPLOYER ================= */}
         <Route
@@ -121,19 +108,12 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-        path="/worker/jobs"
-        element={
-          <ProtectedRoute>
-            <WorkerJobs />
-          </ProtectedRoute>
-        }
-      />
-
 
         {/* ================= 404 ================= */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
+
+      <Footer />
     </>
   );
 }

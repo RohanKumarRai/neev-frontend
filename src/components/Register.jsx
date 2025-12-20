@@ -73,7 +73,7 @@ export default function Register() {
     return (
         <div className="center">
             <div className="card">
-                <div className="h1">Neev — Register</div>
+                <div className="h1">monopsy — Register</div>
                 
                 {error && <div className="alert err">Error: {error}</div>}
                 {success && <div className="alert ok">{success}</div>}
