@@ -30,6 +30,10 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
 
+// RoleRoute
+import RoleRoute from "./components/RoleRoute";
+
+
 // Home
 const Home = () => (
   <div style={{ textAlign: "center", marginTop: 40 }}>
