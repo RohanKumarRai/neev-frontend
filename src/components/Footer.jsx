@@ -1,9 +1,5 @@
 import { Link } from "react-router-dom";
 
-
-
-
-
 export default function Footer() {
   return (
     <footer
@@ -38,10 +34,26 @@ export default function Footer() {
         <div>
           <h4>For Employers</h4>
           <ul style={{ listStyle: "none", padding: 0, marginTop: "8px" }}>
-           <li><Link to="/post-job">Post a Job</Link></li>
-          <li><Link to="/login">Hire Verified Workers</Link></li>
-          <li><Link to="/login">Manage Applications</Link></li>
+            <li>
+              <Link to="/login" state={{ redirectTo: "/employer/post-job" }}>
+                Post a Job
+              </Link>
+            </li>
 
+            <li>
+              <Link to="/login" state={{ redirectTo: "/employer/jobs" }}>
+                Hire Verified Workers
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/login"
+                state={{ redirectTo: "/employer/jobs" }}
+              >
+                Manage Applications
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -49,10 +61,27 @@ export default function Footer() {
         <div>
           <h4>For Workers</h4>
           <ul style={{ listStyle: "none", padding: 0, marginTop: "8px" }}>
-           <li><Link to="/jobs">Find Local Jobs</Link></li>
-          <li><Link to="/login">Create Worker Profile</Link></li>
-          <li><Link to="/login">Get Rated & Hired</Link></li>
+            <li>
+              <Link to="/jobs">Find Local Jobs</Link>
+            </li>
 
+            <li>
+              <Link
+                to="/login"
+                state={{ redirectTo: "/worker/profile" }}
+              >
+                Create Worker Profile
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/login"
+                state={{ redirectTo: "/worker/jobs" }}
+              >
+                Get Rated & Hired
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -60,11 +89,10 @@ export default function Footer() {
         <div>
           <h4>Quick Links</h4>
           <ul style={{ listStyle: "none", padding: 0, marginTop: "8px" }}>
-           <li><Link to="/about">About Us</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
-          <li><Link to="/privacy">Privacy Policy</Link></li>
-          <li><Link to="/terms">Terms & Conditions</Link></li>
-
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/privacy">Privacy Policy</Link></li>
+            <li><Link to="/terms">Terms & Conditions</Link></li>
           </ul>
         </div>
       </div>
