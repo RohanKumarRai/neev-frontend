@@ -16,8 +16,9 @@ import Dashboard from "./components/Dashboard";
 
 // Worker
 import JobList from "./components/JobList";
-import Profile from "./components/Profile";
 import WorkerJobs from "./components/WorkerJobs";
+import Profile from "./components/Profile";
+
 
 // Employer
 import CreateJob from "./components/CreateJob";
@@ -67,14 +68,15 @@ function App() {
           }
         />
 
-        <Route
-          path="/worker/profile"
-          element={
-            <RoleRoute role="ROLE_WORKER">
-              <WorkerProfile />
-            </RoleRoute>
-          }
-        />
+       <Route
+            path="/worker/profile"
+            element={
+              <RoleRoute role="ROLE_WORKER">
+                <Profile />
+              </RoleRoute>
+            }
+          />
+
 
 
         {/* ================= COMMON (AUTH) ================= */}
