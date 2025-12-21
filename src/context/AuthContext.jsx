@@ -40,19 +40,30 @@ export const AuthProvider = ({ children }) => {
     });
 
     // 3. Login function
-   const login = (token, role, userFromBackend) => {
-    setAuthData({
-        token,
-        role,
-        user: userFromBackend   // ✅ REAL user object now
-    });
+        const normalizeRole = (role) => {
+        if (!role) return null;
+        return role.startsWith("ROLE_") ? role : `ROLE_${role}`;
+        };
 
-    localStorage.setItem('token', token);
-    localStorage.setItem('role', role);
-    localStorage.setItem('user', JSON.stringify(userFromBackend));
+        const login = (token, role, userFromBackend) => {
+        const normalizedRole = normalizeRole(role);
 
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-};
+        setAuthData({
+            token,
+            role: normalizedRole,
+            user: { ...userFromBackend, role: normalizedRole }
+        });
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", normalizedRole);
+        localStorage.setItem(
+            "user",
+            JSON.stringify({ ...userFromBackend, role: normalizedRole })
+        );
+
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        };
+
 
 
     // 4. Logout function
