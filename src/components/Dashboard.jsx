@@ -35,8 +35,8 @@ export default function Dashboard() {
 
         <hr style={{ margin: "20px 0" }} />
 
+        {/* ✅ RESPONSIVE GRID */}
         <div className="dashboard-grid">
-
           {/* ================= WORKER ================= */}
           {isWorker && (
             <>
@@ -64,7 +64,7 @@ export default function Dashboard() {
           {isEmployer && (
             <>
               <div
-                className="dashboard-tile"
+                className="dashboard-tile clickable"
                 onClick={() => navigate("/employer/post-job")}
               >
                 <h3>➕ Post a New Job</h3>
@@ -72,7 +72,7 @@ export default function Dashboard() {
               </div>
 
               <div
-                className="dashboard-tile"
+                className="dashboard-tile clickable"
                 onClick={() => navigate("/employer/jobs")}
               >
                 <h3>💼 Manage Postings</h3>
@@ -82,8 +82,8 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* ✅ EXTRA ROLE-BASED BUTTON (WORKER ONLY) */}
-        {user?.role === "ROLE_WORKER" && (
+        {/* EXTRA BUTTON (WORKER ONLY) */}
+        {isWorker && (
           <>
             <hr style={{ margin: "20px 0" }} />
             <button
@@ -101,6 +101,48 @@ export default function Dashboard() {
           Sign Out
         </button>
       </div>
+
+      {/* ✅ INLINE RESPONSIVE STYLES */}
+      <style>{`
+        .dashboard-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 16px;
+        }
+
+        .dashboard-tile {
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          padding: 16px;
+          transition: all 0.2s ease;
+        }
+
+        .dashboard-tile h3 {
+          margin-top: 0;
+        }
+
+        .dashboard-tile a {
+          color: #2563eb;
+          text-decoration: none;
+          font-weight: 500;
+        }
+
+        .dashboard-tile.clickable {
+          cursor: pointer;
+        }
+
+        .dashboard-tile.clickable:hover {
+          background: #f1f5f9;
+          transform: translateY(-2px);
+        }
+
+        @media (max-width: 480px) {
+          .dashboard-card {
+            padding: 14px;
+          }
+        }
+      `}</style>
     </div>
   );
 }

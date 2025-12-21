@@ -1,4 +1,19 @@
-html,body,#root {
+/* ================= GLOBAL RESET ================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* ================= APP BASE ================= */
+
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   font-family: Inter, Arial, sans-serif;
@@ -6,58 +21,150 @@ html,body,#root {
   color: #111827;
 }
 
-.center { display:flex; align-items:center; justify-content:center; height:100vh; }
-.card { width:380px; background:white; padding:18px; border-radius:8px; box-shadow:0 6px 18px rgba(12,12,20,0.06);}
-.h1 { font-size:20px; margin-bottom:12px; }
-.input { width:100%; padding:8px; border-radius:6px; border:1px solid #e5e7eb; margin-top:6px; }
-.btn { padding:8px 12px; border-radius:6px; border:none; background:#2563eb; color:#fff; cursor:pointer;}
-.alert { padding:8px; border-radius:6px; margin-bottom:8px; }
-.alert.err { background:#fee2e2; color:#991b1b; }
-.alert.ok { background:#ecfdf5; color:#065f46; }
+/* ================= COMMON UI ================= */
 
-/* Minimal Dashboard Styles */
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 16px; /* ✅ mobile padding */
+}
+
+.card {
+  width: 100%;
+  max-width: 420px; /* ✅ mobile-friendly */
+  background: white;
+  padding: 18px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(12, 12, 20, 0.06);
+  margin: auto;
+}
+
+.h1 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+/* ================= FORMS & INPUTS (STEP 5) ================= */
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px; /* ✅ prevents iOS zoom */
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  margin-top: 6px;
+}
+
+.btn,
+button {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* ================= ALERTS ================= */
+
+.alert {
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.alert.err {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.alert.ok {
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+/* ================= DASHBOARD ================= */
+
 .dashboard-card {
-    width: 90%;
-    max-width: 600px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .subtitle {
-    font-size: 1.1em;
-    color: #4b5563;
+  font-size: 1.1em;
+  color: #4b5563;
 }
 
+/* ✅ RESPONSIVE GRID FIX */
 .dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two columns for tiles */
-    gap: 20px;
-    margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
 }
 
 .dashboard-tile {
-    padding: 20px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    background-color: #f9fafb;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+  background-color: #f9fafb;
 }
 
 .dashboard-tile:hover {
-    background-color: #eef2ff; /* Light blue hover effect */
-    border-color: #a5b4fc; /* Tailwind indigo-300 */
+  background-color: #eef2ff;
+  border-color: #a5b4fc;
+  transform: translateY(-2px);
 }
 
 .dashboard-tile h3 {
-    margin-top: 0;
-    color: #3b82f6; /* Tailwind blue-500 */
+  margin-top: 0;
+  color: #3b82f6;
 }
 
+/* ================= BUTTON VARIANTS ================= */
+
 .btn-secondary {
-    background-color: #fef2f2; /* Light red/gray for secondary action */
-    color: #ef4444; /* Tailwind red-500 */
-    border: 1px solid #fef2f2;
+  background-color: #fef2f2;
+  color: #ef4444;
+  border: 1px solid #fef2f2;
 }
 
 .btn-secondary:hover {
-    background-color: #fee2e2; /* Slightly darker red hover */
+  background-color: #fee2e2;
+}
+
+/* ================= MOBILE RESPONSIVE TWEAKS (STEP 7) ================= */
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  .container {
+    padding: 12px;
+  }
+
+  header {
+    padding: 12px;
+  }
 }
