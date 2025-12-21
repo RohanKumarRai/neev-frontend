@@ -1,3 +1,6 @@
+//welcomePopup
+import WelcomePopup from "./components/WelcomePopup";
+
 // src/App.jsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
@@ -46,6 +49,9 @@ const Home = () => (
 function App() {
   return (
     <>
+      <WelcomePopup />
+     
+
       <Header />
 
       <Routes>
