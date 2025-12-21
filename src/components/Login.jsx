@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+
 
 export default function Login() {
   const [email, setEmail] = useState("owner@example.com");
@@ -12,6 +14,12 @@ export default function Login() {
   const { login } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+        if (user) {
+        return <Navigate to="/dashboard" />;
+        }
+
 
   // ✅ READ REDIRECT INTENT
   const redirectTo = location.state?.redirectTo || "/dashboard";

@@ -53,6 +53,26 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        {/* ================= PROTECTED ROUTES WITH ROLES ================= */}
+        <Route
+          path="/post-job"
+          element={
+            <RoleRoute role="ROLE_EMPLOYER">
+              <CreateJob />
+            </RoleRoute>
+          }
+        />
+
+        <Route
+          path="/worker/profile"
+          element={
+            <RoleRoute role="ROLE_WORKER">
+              <WorkerProfile />
+            </RoleRoute>
+          }
+        />
+
+
         {/* ================= COMMON (AUTH) ================= */}
         <Route
           path="/dashboard"

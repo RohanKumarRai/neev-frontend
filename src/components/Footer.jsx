@@ -1,6 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Footer() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // 🔹 SINGLE HELPER — SOLVES EVERYTHING
+  function handleNav(requiredRole, targetPath) {
+    if (!user) {
+      navigate("/login", { state: { redirectTo: targetPath } });
+      return;
+    }
+
+    if (user.role !== requiredRole) {
+      navigate("/dashboard");
+      return;
+    }
+
+    navigate(targetPath);
+  }
+
+  // 🔹 shared button style (looks like link)
+  const linkBtn = {
+    background: "none",
+    border: "none",
+    padding: 0,
+    color: "#2563eb",
+    cursor: "pointer",
+    fontSize: "14px"
+  };
+
   return (
     <footer
       style={{
@@ -35,24 +64,36 @@ export default function Footer() {
           <h4>For Employers</h4>
           <ul style={{ listStyle: "none", padding: 0, marginTop: "8px" }}>
             <li>
-              <Link to="/login" state={{ redirectTo: "/employer/post-job" }}>
+              <button
+                style={linkBtn}
+                onClick={() =>
+                  handleNav("ROLE_EMPLOYER", "/employer/post-job")
+                }
+              >
                 Post a Job
-              </Link>
+              </button>
             </li>
 
             <li>
-              <Link to="/login" state={{ redirectTo: "/employer/jobs" }}>
+              <button
+                style={linkBtn}
+                onClick={() =>
+                  handleNav("ROLE_EMPLOYER", "/employer/jobs")
+                }
+              >
                 Hire Verified Workers
-              </Link>
+              </button>
             </li>
 
             <li>
-              <Link
-                to="/login"
-                state={{ redirectTo: "/employer/jobs" }}
+              <button
+                style={linkBtn}
+                onClick={() =>
+                  handleNav("ROLE_EMPLOYER", "/employer/jobs")
+                }
               >
                 Manage Applications
-              </Link>
+              </button>
             </li>
           </ul>
         </div>
@@ -62,25 +103,34 @@ export default function Footer() {
           <h4>For Workers</h4>
           <ul style={{ listStyle: "none", padding: 0, marginTop: "8px" }}>
             <li>
-              <Link to="/jobs">Find Local Jobs</Link>
+              <button
+                style={linkBtn}
+                onClick={() => handleNav("ROLE_WORKER", "/jobs")}
+              >
+                Find Local Jobs
+              </button>
             </li>
 
             <li>
-              <Link
-                to="/login"
-                state={{ redirectTo: "/worker/profile" }}
+              <button
+                style={linkBtn}
+                onClick={() =>
+                  handleNav("ROLE_WORKER", "/worker/profile")
+                }
               >
                 Create Worker Profile
-              </Link>
+              </button>
             </li>
 
             <li>
-              <Link
-                to="/login"
-                state={{ redirectTo: "/worker/jobs" }}
+              <button
+                style={linkBtn}
+                onClick={() =>
+                  handleNav("ROLE_WORKER", "/worker/jobs")
+                }
               >
                 Get Rated & Hired
-              </Link>
+              </button>
             </li>
           </ul>
         </div>
