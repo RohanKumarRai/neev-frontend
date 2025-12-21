@@ -5,18 +5,26 @@ export default function Footer() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // 🔹 SINGLE HELPER — SOLVES EVERYTHING
+  // 🔹 SINGLE HELPER — SOLVES EVERYTHING (WITH LOGS)
   function handleNav(requiredRole, targetPath) {
+    console.log("FOOTER CLICK");
+    console.log("user object:", user);
+    console.log("user.role:", user?.role);
+    console.log("requiredRole:", requiredRole);
+
     if (!user) {
+      console.log("→ not logged in");
       navigate("/login", { state: { redirectTo: targetPath } });
       return;
     }
 
-    if (user?.role !== requiredRole) {
+    if (user.role !== requiredRole) {
+      console.log("→ role mismatch, redirecting to dashboard");
       navigate("/dashboard");
       return;
     }
 
+    console.log("→ role match, navigating to", targetPath);
     navigate(targetPath);
   }
 
