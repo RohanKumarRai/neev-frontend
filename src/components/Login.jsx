@@ -7,8 +7,8 @@ import { Navigate } from "react-router-dom";
 
 
 export default function Login() {
-  const [email, setEmail] = useState("email@example.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
