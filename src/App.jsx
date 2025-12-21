@@ -24,6 +24,12 @@ import CreateJob from "./components/CreateJob";
 import EmployerJobs from "./components/EmployerJobs";
 import JobApplications from "./components/JobApplications";
 
+// Pages (PUBLIC)
+import About from "./pages/About";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Contact from "./pages/Contact";
+
 // Home
 const Home = () => (
   <div style={{ textAlign: "center", marginTop: 40 }}>
@@ -40,6 +46,10 @@ function App() {
       <Routes>
         {/* ================= PUBLIC ================= */}
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 

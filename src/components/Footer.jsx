@@ -1,3 +1,9 @@
+import { Link } from "react-router-dom";
+
+
+
+
+
 export default function Footer() {
   return (
     <footer
@@ -32,9 +38,10 @@ export default function Footer() {
         <div>
           <h4>For Employers</h4>
           <ul style={{ listStyle: "none", padding: 0, marginTop: "8px" }}>
-            <li>Post a Job</li>
-            <li>Hire Verified Workers</li>
-            <li>Manage Applications</li>
+           <li><Link to="/post-job">Post a Job</Link></li>
+          <li><Link to="/login">Hire Verified Workers</Link></li>
+          <li><Link to="/login">Manage Applications</Link></li>
+
           </ul>
         </div>
 
@@ -42,9 +49,10 @@ export default function Footer() {
         <div>
           <h4>For Workers</h4>
           <ul style={{ listStyle: "none", padding: 0, marginTop: "8px" }}>
-            <li>Find Local Jobs</li>
-            <li>Create Worker Profile</li>
-            <li>Get Rated & Hired</li>
+           <li><Link to="/jobs">Find Local Jobs</Link></li>
+          <li><Link to="/login">Create Worker Profile</Link></li>
+          <li><Link to="/login">Get Rated & Hired</Link></li>
+
           </ul>
         </div>
 
@@ -52,10 +60,11 @@ export default function Footer() {
         <div>
           <h4>Quick Links</h4>
           <ul style={{ listStyle: "none", padding: 0, marginTop: "8px" }}>
-            <li>About Us</li>
-            <li>Contact</li>
-            <li>Privacy Policy</li>
-            <li>Terms & Conditions</li>
+           <li><Link to="/about">About Us</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
+          <li><Link to="/privacy">Privacy Policy</Link></li>
+          <li><Link to="/terms">Terms & Conditions</Link></li>
+
           </ul>
         </div>
       </div>
