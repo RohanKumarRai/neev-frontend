@@ -7,19 +7,15 @@ import { Navigate } from "react-router-dom";
 
 
 export default function Login() {
-  const [email, setEmail] = useState("owner@example.com");
-  const [password, setPassword] = useState("OwnerPass1");
+  const [email, setEmail] = useState("email@example.com");
+  const [password, setPassword] = useState("123456");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const { login } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuth();
-
-        if (user) {
-        return <Navigate to="/dashboard" />;
-        }
+ 
 
 
   // ✅ READ REDIRECT INTENT

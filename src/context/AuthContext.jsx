@@ -70,12 +70,16 @@ export const AuthProvider = ({ children }) => {
     const isAuthenticated = !!authData.token;
     
     // The value object passed down to consuming components
-    const contextValue = {
-        authData,
-        isAuthenticated,
-        login,
-        logout,
-    };
+   const contextValue = {
+  authData,
+  user: authData.user,
+  role: authData.role,
+  token: authData.token,
+  isAuthenticated,
+  login,
+  logout,
+};
+
 
     return (
         <AuthContext.Provider value={contextValue}>

@@ -12,7 +12,7 @@ export default function Footer() {
       return;
     }
 
-    if (user.role !== requiredRole) {
+    if (user?.role !== requiredRole) {
       navigate("/dashboard");
       return;
     }
