@@ -1,3 +1,6 @@
+//ScrollTotop
+import ScrollToTop from "./components/ScrollToTop";
+
 //welcomePopup
 import WelcomePopup from "./components/WelcomePopup";
 
@@ -59,11 +62,12 @@ function App() {
    
 return (
     <>
-      <WelcomePopup />
      
-       
-      <Header  />
-
+      <WelcomePopup />
+           
+      <Header  />      
+{/* ✅ ADD THIS HERE */}
+      <ScrollToTop />
       <Routes>
         {/* ================= PUBLIC ================= */}
         <Route path="/" element={<Home />} />
