@@ -56,12 +56,13 @@ const Home = () => (
 
 
 function App() {
-  return (
+   
+return (
     <>
       <WelcomePopup />
      
-
-      <Header />
+       
+      <Header  />
 
       <Routes>
         {/* ================= PUBLIC ================= */}
@@ -73,7 +74,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* ================= PROTECTED ROUTES WITH ROLES ================= */}
+        {/* ================= PROTECTED ROUTES WITH ROLES =================*/ }
         <Route
           path="/post-job"
           element={
@@ -104,7 +105,7 @@ function App() {
           }
         />
 
-        {/* ================= WORKER ================= */}
+        {/* ================= WORKER =================*/ }
         <Route
           path="/jobs"
           element={
@@ -132,7 +133,7 @@ function App() {
           }
         />
 
-        {/* ================= EMPLOYER ================= */}
+        {/* ================= EMPLOYER =================*/ }
         <Route
           path="/employer/jobs"
           element={
@@ -160,7 +161,7 @@ function App() {
           }
         />
 
-        {/* ================= 404 ================= */}
+        {/* ================= 404 =================*/ }
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
 
