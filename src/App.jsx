@@ -39,12 +39,21 @@ import RoleRoute from "./components/RoleRoute";
 
 
 // Home
+import Services from "./components/services";
+
 const Home = () => (
-  <div style={{ textAlign: "center", marginTop: 40 }}>
-    <h1>Welcome to monopsy!</h1>
-    <h2>Find the best workers for your needs.</h2>
-  </div>
+  <>
+    <div style={{ textAlign: "center", padding: "80px 20px", background: "#f9fafb" }}>
+      <h1 style={{ fontSize: "42px" }}>Welcome to monopsy!</h1>
+      <h2 style={{ color: "#4b5563" }}>
+        Find the best workers for your needs.
+      </h2>
+    </div>
+
+    <Services />
+  </>
 );
+
 
 function App() {
   return (
