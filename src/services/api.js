@@ -2,11 +2,31 @@
 
 import axios from "axios";
 
-// 🔹 Backend base URL from Vite environment
+/* ===============================
+   🔒 SAFETY GUARD (MANDATORY)
+   =============================== */
+
+// ❌ Stop app immediately if API URL is missing
+if (!import.meta.env.VITE_API_URL) {
+  throw new Error("VITE_API_URL is not defined");
+}
+
+// ❌ Warn if someone tries to use localhost (Android will fail)
+if (import.meta.env.VITE_API_URL.includes("localhost")) {
+  console.error("❌ Android build cannot use localhost as API URL");
+}
+
+/* ===============================
+   🔹 Backend base URL
+   =============================== */
 // Example in .env:
 // VITE_API_URL=https://your-backend.up.railway.app
+
 const API_BASE_URL = import.meta.env.VITE_API_URL + "/api";
 
+/* ===============================
+   🔹 Axios instance
+   =============================== */
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -14,7 +34,9 @@ const api = axios.create({
   },
 });
 
-// 🔹 Attach JWT token automatically to every request
+/* ===============================
+   🔹 Attach JWT token automatically
+   =============================== */
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -28,7 +50,9 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// 🔹 Global response handler (401 = token expired / invalid)
+/* ===============================
+   🔹 Global response handler
+   =============================== */
 api.interceptors.response.use(
   (response) => response,
   (error) => {
