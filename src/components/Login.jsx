@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
-
-
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,8 +12,6 @@ export default function Login() {
   const { login } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
- 
-
 
   // ✅ READ REDIRECT INTENT
   const redirectTo = location.state?.redirectTo || "/dashboard";
@@ -31,20 +26,22 @@ export default function Login() {
     try {
       const response = await api.post("/users/login", loginData);
 
+      // 🔴 TEMP DEBUG LOG (MANDATORY)
+      console.log("ANDROID LOGIN RESPONSE 👉", response.data);
+
       const { token, role, status, message } = response.data;
 
       // ✅ SUCCESS
       if (status === "success" && token && role) {
         const fakeUser = {
           email,
-          name: email.split("@")[0]
+          name: email.split("@")[0],
         };
 
         login(token, role, fakeUser);
 
         // ✅ REDIRECT WITH INTENT
         navigate(redirectTo, { replace: true });
-
       } else {
         setError(message || "Login failed: No token received.");
       }
