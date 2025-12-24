@@ -1,15 +1,159 @@
-import React from "react";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+// import React from "react";
+// import { useAuth } from "../context/AuthContext";
+// import { useNavigate, Link } from "react-router-dom";
 
+// export default function Dashboard() {
+//   const { authData, logout } = useAuth();
+//   const navigate = useNavigate();
+
+//   if (!authData?.user || !authData?.role) {
+//     return (
+//       <div className="center">
+//         <div className="card">Loading user data...</div>
+//       </div>
+//     );
+//   }
+
+//   const { user, role } = authData;
+//   const name = user?.name || user?.email?.split("@")[0] || "User";
+
+//   const isWorker = role === "ROLE_WORKER";
+//   const isEmployer = role === "ROLE_EMPLOYER";
+
+//   const handleLogout = () => {
+//     logout();
+//     navigate("/login");
+//   };
+
+//   return (
+//     <div className="center">
+//       <div className="card dashboard-card">
+//         <h1>Welcome, {name}!</h1>
+//         <p className="subtitle">
+//           Your role: <b>{role.replace("ROLE_", "")}</b>
+//         </p>
+
+//         <hr style={{ margin: "20px 0" }} />
+
+//         {/* ✅ RESPONSIVE GRID */}
+//         <div className="dashboard-grid">
+//           {/* ================= WORKER ================= */}
+//           {isWorker && (
+//             <>
+//               <div className="dashboard-tile">
+//                 <h3>🔍 Browse Jobs</h3>
+//                 <p>Find and apply for available jobs</p>
+//                 <Link to="/jobs">Browse Jobs</Link>
+//               </div>
+
+//               <div className="dashboard-tile">
+//                 <h3>🛠 My Jobs</h3>
+//                 <p>View jobs assigned to you</p>
+//                 <Link to="/worker/jobs">My Assigned Jobs</Link>
+//               </div>
+
+//               <div className="dashboard-tile">
+//                 <h3>👤 Update Profile</h3>
+//                 <p>Manage your worker profile</p>
+//                 <Link to="/profile">Update Profile</Link>
+//               </div>
+//             </>
+//           )}
+
+//           {/* ================= EMPLOYER ================= */}
+//           {isEmployer && (
+//             <>
+//               <div
+//                 className="dashboard-tile clickable"
+//                 onClick={() => navigate("/employer/post-job")}
+//               >
+//                 <h3>➕ Post a New Job</h3>
+//                 <p>Create a new listing for workers to apply to.</p>
+//               </div>
+
+//               <div
+//                 className="dashboard-tile clickable"
+//                 onClick={() => navigate("/employer/jobs")}
+//               >
+//                 <h3>💼 Manage Postings</h3>
+//                 <p>View applications and manage your job listings.</p>
+//               </div>
+//             </>
+//           )}
+//         </div>
+
+//         {/* EXTRA BUTTON (WORKER ONLY) */}
+//         {isWorker && (
+//           <>
+//             <hr style={{ margin: "20px 0" }} />
+//             <button
+//               className="btn btn-secondary"
+//               onClick={() => navigate("/worker/jobs")}
+//             >
+//               My Assigned Jobs
+//             </button>
+//           </>
+//         )}
+
+//         <hr style={{ margin: "20px 0" }} />
+
+//         <button className="btn btn-secondary" onClick={handleLogout}>
+//           Sign Out
+//         </button>
+//       </div>
+
+//       {/* ✅ INLINE RESPONSIVE STYLES */}
+//       <style>{`
+//         .dashboard-grid {
+//           display: grid;
+//           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+//           gap: 16px;
+//         }
+
+//         .dashboard-tile {
+//           background: #f9fafb;
+//           border: 1px solid #e5e7eb;
+//           border-radius: 8px;
+//           padding: 16px;
+//           transition: all 0.2s ease;
+//         }
+
+//         .dashboard-tile h3 {
+//           margin-top: 0;
+//         }
+
+//         .dashboard-tile a {
+//           color: #2563eb;
+//           text-decoration: none;
+//           font-weight: 500;
+//         }
+
+//         .dashboard-tile.clickable {
+//           cursor: pointer;
+//         }
+
+//         .dashboard-tile.clickable:hover {
+//           background: #f1f5f9;
+//           transform: translateY(-2px);
+//         }
+
+//         @media (max-width: 480px) {
+//           .dashboard-card {
+//             padding: 14px;
+//           }
+//         }
+//       `}</style>
+//     </div>
+//   );
+// }
 export default function Dashboard() {
   const { authData, logout } = useAuth();
   const navigate = useNavigate();
 
   if (!authData?.user || !authData?.role) {
     return (
-      <div className="center">
-        <div className="card">Loading user data...</div>
+      <div style={pageWrapper}>
+        <div style={card}>Loading user data...</div>
       </div>
     );
   }
@@ -26,123 +170,67 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="center">
-      <div className="card dashboard-card">
+    <div style={pageWrapper}>
+      <div style={dashboardCard}>
         <h1>Welcome, {name}!</h1>
-        <p className="subtitle">
+        <p>
           Your role: <b>{role.replace("ROLE_", "")}</b>
         </p>
 
-        <hr style={{ margin: "20px 0" }} />
+        <hr />
 
-        {/* ✅ RESPONSIVE GRID */}
-        <div className="dashboard-grid">
-          {/* ================= WORKER ================= */}
+        <div style={grid}>
           {isWorker && (
             <>
-              <div className="dashboard-tile">
-                <h3>🔍 Browse Jobs</h3>
-                <p>Find and apply for available jobs</p>
-                <Link to="/jobs">Browse Jobs</Link>
-              </div>
-
-              <div className="dashboard-tile">
-                <h3>🛠 My Jobs</h3>
-                <p>View jobs assigned to you</p>
-                <Link to="/worker/jobs">My Assigned Jobs</Link>
-              </div>
-
-              <div className="dashboard-tile">
-                <h3>👤 Update Profile</h3>
-                <p>Manage your worker profile</p>
-                <Link to="/profile">Update Profile</Link>
-              </div>
+              <Tile title="Browse Jobs" to="/jobs" />
+              <Tile title="My Jobs" to="/worker/jobs" />
+              <Tile title="Update Profile" to="/profile" />
             </>
           )}
 
-          {/* ================= EMPLOYER ================= */}
           {isEmployer && (
             <>
-              <div
-                className="dashboard-tile clickable"
-                onClick={() => navigate("/employer/post-job")}
-              >
-                <h3>➕ Post a New Job</h3>
-                <p>Create a new listing for workers to apply to.</p>
-              </div>
-
-              <div
-                className="dashboard-tile clickable"
-                onClick={() => navigate("/employer/jobs")}
-              >
-                <h3>💼 Manage Postings</h3>
-                <p>View applications and manage your job listings.</p>
-              </div>
+              <Tile title="Post a Job" to="/employer/post-job" />
+              <Tile title="Manage Jobs" to="/employer/jobs" />
             </>
           )}
         </div>
 
-        {/* EXTRA BUTTON (WORKER ONLY) */}
-        {isWorker && (
-          <>
-            <hr style={{ margin: "20px 0" }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => navigate("/worker/jobs")}
-            >
-              My Assigned Jobs
-            </button>
-          </>
-        )}
+        <hr />
 
-        <hr style={{ margin: "20px 0" }} />
-
-        <button className="btn btn-secondary" onClick={handleLogout}>
+        <button style={btn} onClick={handleLogout}>
           Sign Out
         </button>
       </div>
-
-      {/* ✅ INLINE RESPONSIVE STYLES */}
-      <style>{`
-        .dashboard-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 16px;
-        }
-
-        .dashboard-tile {
-          background: #f9fafb;
-          border: 1px solid #e5e7eb;
-          border-radius: 8px;
-          padding: 16px;
-          transition: all 0.2s ease;
-        }
-
-        .dashboard-tile h3 {
-          margin-top: 0;
-        }
-
-        .dashboard-tile a {
-          color: #2563eb;
-          text-decoration: none;
-          font-weight: 500;
-        }
-
-        .dashboard-tile.clickable {
-          cursor: pointer;
-        }
-
-        .dashboard-tile.clickable:hover {
-          background: #f1f5f9;
-          transform: translateY(-2px);
-        }
-
-        @media (max-width: 480px) {
-          .dashboard-card {
-            padding: 14px;
-          }
-        }
-      `}</style>
     </div>
   );
 }
+
+const pageWrapper = {
+  padding: "40px 16px",
+  display: "flex",
+  justifyContent: "center",
+};
+
+const dashboardCard = {
+  width: "100%",
+  maxWidth: "900px",
+  background: "#fff",
+  padding: "24px",
+  borderRadius: "12px",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+};
+
+const grid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+  gap: "16px",
+};
+
+const btn = {
+  padding: "10px 14px",
+  borderRadius: "6px",
+  border: "1px solid #e5e7eb",
+  background: "#f9fafb",
+  cursor: "pointer",
+};
