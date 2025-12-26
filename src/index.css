@@ -1,179 +1,104 @@
 /* ================= GLOBAL RESET ================= */
-
 * {
   box-sizing: border-box;
 }
 
 html,
 body {
-  overflow-x: hidden; /* Prevent horizontal scroll */
-}
-
-/* ================= APP BASE ================= */
-
-html,
-body,
-#root {
-  height: 100%;
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
   font-family: Inter, Arial, sans-serif;
   background: #f7f7fb;
   color: #111827;
 }
 
-/* ================= COMMON UI ================= */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
+/* ================= LAYOUT ================= */
+.main-content {
+  flex: 1;
+}
+
+/* ================= COMMON UI ================= */
 .center {
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 100vh;
-  padding: 16px; /* ✅ mobile padding */
+  align-items: flex-start;
+  padding: 24px 16px;
+  min-height: calc(100vh - 160px);
 }
 
 .card {
   width: 100%;
-  max-width: 420px; /* ✅ mobile-friendly */
+  max-width: 420px;
   background: white;
   padding: 18px;
   border-radius: 8px;
   box-shadow: 0 6px 18px rgba(12, 12, 20, 0.06);
-  margin: auto;
 }
 
-.h1 {
-  font-size: 20px;
-  margin-bottom: 12px;
+.dashboard-card {
+  max-width: 900px;
 }
 
-/* ================= FORMS & INPUTS (STEP 5) ================= */
-
+/* ================= FORMS ================= */
 input,
 select,
 textarea {
   width: 100%;
   padding: 12px;
-  font-size: 16px; /* ✅ prevents iOS zoom */
+  font-size: 16px;
   border-radius: 6px;
   border: 1px solid #d1d5db;
   margin-top: 6px;
 }
 
-.btn,
-button {
+button,
+.btn {
   width: 100%;
-  padding: 12px 16px;
-  font-size: 16px;
+  padding: 12px;
   border-radius: 6px;
   border: none;
   background: #2563eb;
-  color: #fff;
+  color: white;
   cursor: pointer;
 }
 
-/* ================= ALERTS ================= */
-
-.alert {
-  padding: 8px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-}
-
-.alert.err {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.alert.ok {
-  background: #ecfdf5;
-  color: #065f46;
-}
-
 /* ================= DASHBOARD ================= */
-
-.dashboard-card {
-  width: 100%;
-  max-width: 600px;
-}
-
-.subtitle {
-  font-size: 1.1em;
-  color: #4b5563;
-}
-
-/* ✅ RESPONSIVE GRID FIX */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
-  margin-top: 20px;
 }
 
 .dashboard-tile {
-  padding: 20px;
+  background: #f9fafb;
   border: 1px solid #e5e7eb;
+  padding: 20px;
   border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
-  background-color: #f9fafb;
+  transition: 0.2s;
 }
 
 .dashboard-tile:hover {
-  background-color: #eef2ff;
-  border-color: #a5b4fc;
+  background: #eef2ff;
   transform: translateY(-2px);
 }
 
-.dashboard-tile h3 {
-  margin-top: 0;
-  color: #3b82f6;
-}
-
 /* ================= BUTTON VARIANTS ================= */
-
 .btn-secondary {
-  background-color: #fef2f2;
-  color: #ef4444;
-  border: 1px solid #fef2f2;
+  background: #fee2e2;
+  color: #dc2626;
 }
 
-.btn-secondary:hover {
-  background-color: #fee2e2;
-}
-
-/* ================= MOBILE RESPONSIVE TWEAKS (STEP 7) ================= */
-
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
-  h1 {
-    font-size: 1.6rem;
-  }
-
-  h2 {
-    font-size: 1.2rem;
-  }
-
-  h3 {
-    font-size: 1.05rem;
-  }
-
-  body {
-    font-size: 15px;
-  }
-
-  .container {
-    padding: 12px;
-  }
-
-  header {
-    padding: 12px;
-  }
-}
-@media (max-width: 768px) {
-  nav {
-    display: none !important;
-  }
-
-  header button {
-    display: block !important;
-  }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.2rem; }
+  body { font-size: 15px; }
 }
