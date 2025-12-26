@@ -23,7 +23,6 @@ export default function JobList() {
     }
   };
 
-  // ✅ REPLACED FUNCTION (your requested version)
   const applyToJob = async (jobId) => {
     setError("");
     setSuccess("");
@@ -33,12 +32,9 @@ export default function JobList() {
       setSuccess("✅ Applied successfully!");
     } catch (err) {
       console.error("Apply Error:", err);
-
-      if (err.response && err.response.data) {
-        setError(err.response.data);
-      } else {
-        setError("Failed to apply.");
-      }
+      setError(
+        err.response?.data || "Failed to apply."
+      );
     }
   };
 
@@ -52,8 +48,8 @@ export default function JobList() {
 
   return (
     <div className="center">
-      <div className="card" style={{ width: "100%", maxWidth: "900px" }}>
-        <h2>Available Jobs</h2>
+      <div className="card" style={{ maxWidth: "900px", width: "100%" }}>
+        <h2 style={{ marginBottom: "20px" }}>Available Jobs</h2>
 
         {error && <div className="alert err">{error}</div>}
         {success && <div className="alert ok">{success}</div>}
@@ -61,28 +57,49 @@ export default function JobList() {
         {jobs.length === 0 ? (
           <p>No jobs available right now.</p>
         ) : (
-          jobs.map((job) => (
-            <div key={job.id} className="job-card">
-              <h3>{job.title}</h3>
-              <p><b>Description:</b> {job.description}</p>
-              <p><b>Location:</b> {job.location}</p>
-              <p><b>Category:</b> {job.category}</p>
-              <p><b>Job Type:</b> {job.jobType}</p>
-              <p><b>Salary:</b> {job.salary}</p>
-              <p><b>Contact:</b> {job.contactPhone}</p>
-              <p><b>Status:</b> {job.status}</p>
+          <div className="jobs-wrapper">
+            {jobs.map((job) => (
+              <div key={job.id} className="job-card">
+                
+                {/* HEADER */}
+                <div className="job-header">
+                  <h3>{job.title}</h3>
+                  <span className={`status ${job.status.toLowerCase()}`}>
+                    {job.status}
+                  </span>
+                </div>
 
-              <button
-                className="btn"
-                onClick={() => applyToJob(job.id)}
-                disabled={job.status !== "OPEN"}
-              >
-                {job.status === "OPEN" ? "Apply" : "Not Available"}
-              </button>
+                {/* DESCRIPTION */}
+                <p className="job-desc">{job.description}</p>
 
-              <hr />
-            </div>
-          ))
+                {/* META */}
+                <div className="job-meta">
+                  <span>📍 {job.location}</span>
+                  <span>🛠 {job.category}</span>
+                  <span>⏱ {job.jobType.replace("_", " ")}</span>
+                  <span>📞 {job.contactPhone}</span>
+                </div>
+
+                {/* FOOTER */}
+                <div className="job-footer">
+                  <span className="salary">₹ {job.salary}</span>
+
+                  <button
+                    className={`apply-btn ${
+                      job.status !== "OPEN" ? "disabled" : ""
+                    }`}
+                    onClick={() => applyToJob(job.id)}
+                    disabled={job.status !== "OPEN"}
+                  >
+                    {job.status === "OPEN"
+                      ? "Apply"
+                      : "Not Available"}
+                  </button>
+                </div>
+
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
