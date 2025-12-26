@@ -1,47 +1,42 @@
 import React, { useState } from "react";
 
+const SKILLS = [
+  "Plumber",
+  "Electrician",
+  "Painter",
+  "Carpenter",
+  "Driver",
+  "Cleaner",
+  "Mechanic",
+  "Other"
+];
+
 export default function WorkerProfile() {
   const [form, setForm] = useState({
     name: "",
     skill: "",
-    otherSkill: "",
+    customSkill: "",
     location: "",
     experience: "",
     rate: "",
-    jobType: "FULL_TIME",
+    type: "Full Time"
   });
 
-  const skills = [
-    "Plumber",
-    "Driver",
-    "Electrician",
-    "Painter",
-    "Carpenter",
-    "Mechanic",
-    "Other",
-  ];
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const finalSkill =
+    form.skill === "Other" ? form.customSkill : form.skill;
+
   return (
-    <div className="center">
-      <div
-        className="card"
-        style={{
-          maxWidth: "900px",
-          width: "100%",
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr",
-          gap: "24px",
-        }}
-      >
-        {/* LEFT FORM */}
-        <div>
+    <div className="profile-page">
+      <div className="profile-card">
+
+        {/* LEFT */}
+        <div className="profile-form">
           <h2>Create Worker Profile</h2>
-          <p style={{ color: "#6b7280", marginBottom: "20px" }}>
+          <p className="profile-subtitle">
             Complete your profile to get better job matches
           </p>
 
@@ -53,25 +48,19 @@ export default function WorkerProfile() {
           />
 
           {/* ✅ SKILL DROPDOWN */}
-          <select
-            name="skill"
-            value={form.skill}
-            onChange={handleChange}
-          >
+          <select name="skill" value={form.skill} onChange={handleChange}>
             <option value="">Select Skill</option>
-            {skills.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
+            {SKILLS.map((s) => (
+              <option key={s} value={s}>{s}</option>
             ))}
           </select>
 
           {/* ✅ OTHER SKILL INPUT */}
           {form.skill === "Other" && (
             <input
-              name="otherSkill"
+              name="customSkill"
               placeholder="Enter your skill"
-              value={form.otherSkill}
+              value={form.customSkill}
               onChange={handleChange}
             />
           )}
@@ -88,7 +77,6 @@ export default function WorkerProfile() {
             placeholder="Experience (years)"
             value={form.experience}
             onChange={handleChange}
-            type="number"
           />
 
           <input
@@ -96,46 +84,37 @@ export default function WorkerProfile() {
             placeholder="Daily Rate (₹)"
             value={form.rate}
             onChange={handleChange}
-            type="number"
           />
 
-          <select
-            name="jobType"
-            value={form.jobType}
-            onChange={handleChange}
-          >
-            <option value="FULL_TIME">Full Time</option>
-            <option value="PART_TIME">Part Time</option>
-            <option value="DAILY">Daily</option>
+          <select name="type" value={form.type} onChange={handleChange}>
+            <option>Full Time</option>
+            <option>Part Time</option>
+            <option>Daily</option>
           </select>
 
-          <button className="btn" style={{ marginTop: "10px" }}>
-            Save Profile
-          </button>
+          <button>Save Profile</button>
         </div>
 
-        {/* RIGHT PREVIEW */}
-        <div
-          style={{
-            background: "#f9fafb",
-            padding: "16px",
-            borderRadius: "10px",
-            border: "1px solid #e5e7eb",
-          }}
-        >
-          <h3>Preview</h3>
-          <p><b>Name:</b> {form.name || "—"}</p>
-          <p>
-            <b>Skill:</b>{" "}
-            {form.skill === "Other"
-              ? form.otherSkill || "—"
-              : form.skill || "—"}
-          </p>
-          <p><b>Location:</b> {form.location || "—"}</p>
-          <p><b>Experience:</b> {form.experience ? `${form.experience} years` : "—"}</p>
-          <p><b>Rate:</b> {form.rate ? `₹${form.rate}` : "—"}</p>
-          <p><b>Job Type:</b> {form.jobType.replace("_", " ")}</p>
+        {/* RIGHT */}
+        <div className="profile-info">
+          <h3>💡 Why complete profile?</h3>
+          <ul>
+            <li>✔ Get matched faster</li>
+            <li>✔ Trusted by employers</li>
+            <li>✔ Higher chance of hiring</li>
+          </ul>
+
+          <div className="profile-preview">
+            <h4>Preview</h4>
+            <p><b>Name:</b> {form.name || "—"}</p>
+            <p><b>Skill:</b> {finalSkill || "—"}</p>
+            <p><b>Location:</b> {form.location || "—"}</p>
+            <p><b>Experience:</b> {form.experience ? `${form.experience} yrs` : "—"}</p>
+            <p><b>Rate:</b> {form.rate ? `₹${form.rate}` : "—"}</p>
+            <p><b>Type:</b> {form.type}</p>
+          </div>
         </div>
+
       </div>
     </div>
   );
