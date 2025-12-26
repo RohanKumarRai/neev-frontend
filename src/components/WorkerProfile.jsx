@@ -1,92 +1,142 @@
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import api from '../services/api';
+import React, { useState } from "react";
 
 export default function WorkerProfile() {
-  const { authData } = useAuth();
-  const token = authData?.token;
+  const [form, setForm] = useState({
+    name: "",
+    skill: "",
+    otherSkill: "",
+    location: "",
+    experience: "",
+    rate: "",
+    jobType: "FULL_TIME",
+  });
 
-  const [loading, setLoading] = useState(true);
-  const [existingProfile, setExistingProfile] = useState(null);
-  const [output, setOutput] = useState('');
+  const skills = [
+    "Plumber",
+    "Driver",
+    "Electrician",
+    "Painter",
+    "Carpenter",
+    "Mechanic",
+    "Other",
+  ];
 
-  const [fullName, setFullName] = useState('');
-  const [skill, setSkill] = useState('');
-  const [location, setLocation] = useState('');
-  const [experience, setExperience] = useState('');
-  const [dailyRate, setDailyRate] = useState('');
-  const [availability, setAvailability] = useState('FULL_TIME');
-
-  useEffect(() => {
-    async function loadProfile() {
-      try {
-        const res = await api.get('/workers/me');
-        setExistingProfile(res.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (token) loadProfile();
-  }, [token]);
-
-  async function createProfile() {
-    try {
-      const payload = {
-        fullName,
-        skillCategory: skill,
-        location,
-        experienceYears: Number(experience),
-        dailyRate: Number(dailyRate),
-        availability,
-        phone: '9999999999'
-      };
-
-      const res = await api.post('/workers', payload);
-      setExistingProfile(res.data);
-      setOutput('Profile created successfully');
-    } catch (err) {
-      setOutput(err.response?.data?.message || 'Failed to create profile');
-    }
-  }
-
-  if (loading) return <p>Loading profile...</p>;
-
-  if (existingProfile) {
-    return (
-      <div className="card" style={{ maxWidth: 500 }}>
-        <h3>Worker Profile</h3>
-        <p><b>Name:</b> {existingProfile.fullName}</p>
-        <p><b>Skill:</b> {existingProfile.skillCategory}</p>
-        <p><b>Location:</b> {existingProfile.location}</p>
-        <p><b>Experience:</b> {existingProfile.experienceYears} years</p>
-        <p><b>Daily Rate:</b> ₹{existingProfile.dailyRate}</p>
-        <p><b>Availability:</b> {existingProfile.availability}</p>
-        <p style={{ color: 'green' }}>✅ Profile completed</p>
-      </div>
-    );
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
 
   return (
-    <div className="card" style={{ maxWidth: 500 }}>
-      <h3>Create Worker Profile</h3>
+    <div className="center">
+      <div
+        className="card"
+        style={{
+          maxWidth: "900px",
+          width: "100%",
+          display: "grid",
+          gridTemplateColumns: "2fr 1fr",
+          gap: "24px",
+        }}
+      >
+        {/* LEFT FORM */}
+        <div>
+          <h2>Create Worker Profile</h2>
+          <p style={{ color: "#6b7280", marginBottom: "20px" }}>
+            Complete your profile to get better job matches
+          </p>
 
-      <input placeholder="Full Name" value={fullName} onChange={e => setFullName(e.target.value)} />
-      <input placeholder="Skill" value={skill} onChange={e => setSkill(e.target.value)} />
-      <input placeholder="Location" value={location} onChange={e => setLocation(e.target.value)} />
-      <input type="number" placeholder="Experience" value={experience} onChange={e => setExperience(e.target.value)} />
-      <input type="number" placeholder="Daily Rate" value={dailyRate} onChange={e => setDailyRate(e.target.value)} />
+          <input
+            name="name"
+            placeholder="Full Name"
+            value={form.name}
+            onChange={handleChange}
+          />
 
-      <select value={availability} onChange={e => setAvailability(e.target.value)}>
-        <option value="FULL_TIME">Full Time</option>
-        <option value="PART_TIME">Part Time</option>
-        <option value="DAILY">Daily</option>
-      </select>
+          {/* ✅ SKILL DROPDOWN */}
+          <select
+            name="skill"
+            value={form.skill}
+            onChange={handleChange}
+          >
+            <option value="">Select Skill</option>
+            {skills.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
 
-      <button onClick={createProfile}>Create Profile</button>
-      <p>{output}</p>
+          {/* ✅ OTHER SKILL INPUT */}
+          {form.skill === "Other" && (
+            <input
+              name="otherSkill"
+              placeholder="Enter your skill"
+              value={form.otherSkill}
+              onChange={handleChange}
+            />
+          )}
+
+          <input
+            name="location"
+            placeholder="Location"
+            value={form.location}
+            onChange={handleChange}
+          />
+
+          <input
+            name="experience"
+            placeholder="Experience (years)"
+            value={form.experience}
+            onChange={handleChange}
+            type="number"
+          />
+
+          <input
+            name="rate"
+            placeholder="Daily Rate (₹)"
+            value={form.rate}
+            onChange={handleChange}
+            type="number"
+          />
+
+          <select
+            name="jobType"
+            value={form.jobType}
+            onChange={handleChange}
+          >
+            <option value="FULL_TIME">Full Time</option>
+            <option value="PART_TIME">Part Time</option>
+            <option value="DAILY">Daily</option>
+          </select>
+
+          <button className="btn" style={{ marginTop: "10px" }}>
+            Save Profile
+          </button>
+        </div>
+
+        {/* RIGHT PREVIEW */}
+        <div
+          style={{
+            background: "#f9fafb",
+            padding: "16px",
+            borderRadius: "10px",
+            border: "1px solid #e5e7eb",
+          }}
+        >
+          <h3>Preview</h3>
+          <p><b>Name:</b> {form.name || "—"}</p>
+          <p>
+            <b>Skill:</b>{" "}
+            {form.skill === "Other"
+              ? form.otherSkill || "—"
+              : form.skill || "—"}
+          </p>
+          <p><b>Location:</b> {form.location || "—"}</p>
+          <p><b>Experience:</b> {form.experience ? `${form.experience} years` : "—"}</p>
+          <p><b>Rate:</b> {form.rate ? `₹${form.rate}` : "—"}</p>
+          <p><b>Job Type:</b> {form.jobType.replace("_", " ")}</p>
+        </div>
+      </div>
     </div>
   );
 }
