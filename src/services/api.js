@@ -1,66 +1,58 @@
 // src/services/api.js
 
+// ✅ CHANGES:
+//  1. Removed the hard `throw new Error` on missing VITE_API_URL.
+//     That crashed the entire app at startup in dev if .env wasn't set yet.
+//     Now it warns and falls back to localhost so development still works.
+//
+//  2. Removed the hard console.error on localhost — that's valid in dev.
+//
+//  3. On 401, token + user are now cleared automatically and user is sent to /login.
+//     Previously it only logged a warning and left stale auth data in localStorage.
+//
+//  4. Create a .env file in your project root with:
+//       VITE_API_URL=http://localhost:8080
+//     For production Vercel deployment set:
+//       VITE_API_URL=https://your-backend.up.railway.app
+
 import axios from "axios";
 
-/* ===============================
-   🔒 SAFETY GUARD (MANDATORY)
-   =============================== */
+const rawBase = import.meta.env.VITE_API_URL;
 
-// ❌ Stop app immediately if API URL is missing
-if (!import.meta.env.VITE_API_URL) {
-  throw new Error("VITE_API_URL is not defined");
+if (!rawBase) {
+  console.warn(
+    "⚠️  VITE_API_URL is not set in .env — falling back to http://localhost:8080"
+  );
 }
 
-// ❌ Warn if someone tries to use localhost (Android will fail)
-if (import.meta.env.VITE_API_URL.includes("localhost")) {
-  console.error("❌ Android build cannot use localhost as API URL");
-}
+const API_BASE_URL = (rawBase || "http://localhost:8080") + "/api";
 
-/* ===============================
-   🔹 Backend base URL
-   =============================== */
-// Example in .env:
-// VITE_API_URL=https://your-backend.up.railway.app
-
-const API_BASE_URL = import.meta.env.VITE_API_URL + "/api";
-
-/* ===============================
-   🔹 Axios instance
-   =============================== */
 const api = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  headers: { "Content-Type": "application/json" },
 });
 
-/* ===============================
-   🔹 Attach JWT token automatically
-   =============================== */
+// Attach JWT to every request automatically
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-/* ===============================
-   🔹 Global response handler
-   =============================== */
+// Global response error handler
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      console.warn("Unauthorized or token expired");
-      // optional later:
-      // localStorage.removeItem("token");
-      // window.location.href = "/login";
+      // ✅ FIX: clear stale auth and redirect to login
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("user");
+      delete api.defaults.headers.common["Authorization"];
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }

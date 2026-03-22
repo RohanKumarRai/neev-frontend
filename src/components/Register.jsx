@@ -1,144 +1,125 @@
 // src/components/Register.jsx
+//
+// ✅ CHANGES:
+//  1. Double ROLE_ prefix bug fixed.
+//     The form sends role = "WORKER" or "EMPLOYER" (from the dropdown).
+//     The old code then did: role: 'ROLE_' + role.toUpperCase()
+//     which produces "ROLE_WORKER" — correct.
+//     BUT if someone ever set the dropdown value to "ROLE_WORKER" directly
+//     it would produce "ROLE_ROLE_WORKER". Fixed with a proper normalise check.
+//
+//  2. "Sign in here" changed from <a href="/login"> to <Link to="/login">
+//     to avoid full page reload.
+//
+//  3. Consistent form gap styling added (same as Login).
 
-import React, { useState } from 'react';
-import api from '../services/api';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import api from "../services/api";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Register() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [role, setRole] = useState('WORKER'); 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+  const [name, setName]         = useState("");
+  const [email, setEmail]       = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole]         = useState("WORKER");
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState("");
+  const [success, setSuccess]   = useState("");
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        setSuccess('');
-        setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
 
-        const userData = {
-            name,
-            email,
-            password,
-            // ⭐️ CONFIRMED FIX: Backend expects ROLE_WORKER / ROLE_EMPLOYER
-            role: 'ROLE_' + role.toUpperCase()
-        };
+    // ✅ FIX: normalise safely — never double-prefix
+    const normalizedRole = role.startsWith("ROLE_") ? role : `ROLE_${role.toUpperCase()}`;
 
-        try {
-            const response = await api.post('/users', userData);
+    const userData = { name, email, password, role: normalizedRole };
 
-            setSuccess(`Registration successful for ${response.data.name}! Please login.`);
+    try {
+      const response = await api.post("/users", userData);
+      setSuccess(`Account created for ${response.data.name || email}! Redirecting to login...`);
+      setName(""); setEmail(""); setPassword("");
+      setTimeout(() => navigate("/login"), 2000);
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        (typeof err.response?.data === "string" ? err.response.data : null) ||
+        "Registration failed. Please try again.";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            setName('');
-            setEmail('');
-            setPassword('');
+  return (
+    <div className="center">
+      <div className="card">
+        <h2 style={{ marginBottom: "16px" }}>monopsy — Register</h2>
 
-            setTimeout(() => {
-                navigate('/login');
-            }, 2000);
+        {error   && <div style={{ color: "#dc2626", marginBottom: "12px", fontSize: "14px" }}>⚠ {error}</div>}
+        {success && <div style={{ color: "#16a34a", marginBottom: "12px", fontSize: "14px" }}>✅ {success}</div>}
 
-        } catch (err) {
-            console.error('Registration API Error Object:', err); // ⭐️ Full error log
-            
-            let errorMessage = 'Registration failed. Please try again.';
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
 
-            // ⭐️ Extract meaningful message from backend response DTO
-            if (err.response && err.response.data && err.response.data.message) {
-                errorMessage = err.response.data.message;
+          <label>
+            I am registering as:
+            <select value={role} onChange={(e) => setRole(e.target.value)} style={{ marginTop: "4px" }}>
+              <option value="WORKER">Worker (Looking for jobs)</option>
+              <option value="EMPLOYER">Employer (Posting jobs)</option>
+            </select>
+          </label>
 
-            } else if (
-                err.response && 
-                err.response.data && 
-                typeof err.response.data === 'string'
-            ) {
-                // ⭐️ Handles raw string messages from Spring Security filters
-                errorMessage = err.response.data;
+          <label>
+            Full Name
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="John Doe"
+              style={{ marginTop: "4px" }}
+            />
+          </label>
 
-            } else if (err.response && err.response.data) {
-                console.error('Backend Data:', err.response.data);
-            }
+          <label>
+            Email
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              style={{ marginTop: "4px" }}
+            />
+          </label>
 
-            setError(errorMessage);
+          <label>
+            Password
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Secure password"
+              style={{ marginTop: "4px" }}
+            />
+          </label>
 
-        } finally {
-            setLoading(false);
-        }
-    };
+          <button className="btn" disabled={loading} style={{ marginTop: "4px" }}>
+            {loading ? "Creating account..." : "Create Account"}
+          </button>
+        </form>
 
-    return (
-        <div className="center">
-            <div className="card">
-                <div className="h1">monopsy — Register</div>
-                
-                {error && <div className="alert err">Error: {error}</div>}
-                {success && <div className="alert ok">{success}</div>}
-
-                <form onSubmit={handleSubmit}>
-                    
-                    {/* Role Selection */}
-                    <label>I am registering as:
-                        <select 
-                            className="input" 
-                            value={role} 
-                            onChange={e => setRole(e.target.value)}
-                        >
-                            <option value="WORKER">Worker (Looking for jobs)</option>
-                            <option value="EMPLOYER">Employer (Posting jobs)</option>
-                        </select>
-                    </label>
-
-                    {/* Name */}
-                    <label>Full Name
-                        <input 
-                            className="input" 
-                            type="text" 
-                            required 
-                            value={name} 
-                            onChange={e => setName(e.target.value)} 
-                            placeholder="John Doe" 
-                        />
-                    </label>
-
-                    {/* Email */}
-                    <label>Email
-                        <input 
-                            className="input" 
-                            type="email" 
-                            required 
-                            value={email} 
-                            onChange={e => setEmail(e.target.value)} 
-                            placeholder="you@example.com" 
-                        />
-                    </label>
-
-                    {/* Password */}
-                    <label>Password
-                        <input 
-                            className="input" 
-                            type="password" 
-                            required 
-                            value={password} 
-                            onChange={e => setPassword(e.target.value)} 
-                            placeholder="Secure password" 
-                        />
-                    </label>
-                    
-                    <div style={{ marginTop: 15 }}>
-                        <button className="btn" disabled={loading}>
-                            {loading ? 'Registering...' : 'Create Account'}
-                        </button>
-                    </div>
-                </form>
-                
-                <div style={{ marginTop: 12, fontSize: 13, color: '#6b7280' }}>
-                    Already have an account? <a href="/login">Sign in here.</a>
-                </div>
-            </div>
-        </div>
-    );
+        {/* ✅ FIX: Link instead of <a> */}
+        <p style={{ marginTop: "12px", fontSize: "13px", color: "#6b7280" }}>
+          Already have an account?{" "}
+          <Link to="/login" style={{ color: "#2563eb" }}>Sign in here.</Link>
+        </p>
+      </div>
+    </div>
+  );
 }

@@ -1,10 +1,7 @@
 /* ================= RESET ================= */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   min-height: 100%;
@@ -21,18 +18,8 @@ body {
 }
 
 /* ================= LAYOUT ================= */
-.app-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+.main-content { flex: 1; padding-top: 20px; }
 
-.main-content {
-  flex: 1;
-  padding-top: 20px;
-}
-
-/* ================= HEADER FIX ================= */
 header {
   position: sticky;
   top: 0;
@@ -47,7 +34,6 @@ header {
   padding: 32px 16px;
 }
 
-
 .card {
   width: 100%;
   max-width: 420px;
@@ -57,29 +43,45 @@ header {
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-.dashboard-card {
-  max-width: 900px;
+.dashboard-card { max-width: 900px; }
+
+/* ================= ALERTS ================= */
+/* ✅ NEW: alert styles referenced in Login, Register, CreateJob etc. */
+.alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.alert.err {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.alert.ok {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
 }
 
 /* ================= FORMS ================= */
-input,
-select,
-textarea {
+input, select, textarea {
   width: 100%;
   padding: 12px 14px;
   font-size: 15px;
   border-radius: 8px;
   border: 1px solid #d1d5db;
   outline: none;
+  font-family: inherit;
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus, textarea:focus {
   border-color: #2563eb;
 }
 
-button,
-.btn {
+button, .btn {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -88,6 +90,12 @@ button,
   color: white;
   font-weight: 600;
   cursor: pointer;
+  font-size: 15px;
+}
+
+button:disabled, .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
@@ -116,10 +124,7 @@ button,
 }
 
 /* ================= JOB LIST ================= */
-.jobs-wrapper {
-  display: grid;
-  gap: 22px;
-}
+.jobs-wrapper { display: grid; gap: 22px; }
 
 .job-card {
   background: #fff;
@@ -132,24 +137,21 @@ button,
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 }
 
+/* ✅ FIX: status badges use UPPERCASE class names matching JobRequest.Status enum */
 .status {
   padding: 6px 14px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
+  text-transform: uppercase;
 }
 
-.status.OPEN {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.status.COMPLETED {
-  background: #fee2e2;
-  color: #991b1b;
-}
+.status.OPEN      { background: #dcfce7; color: #166534; }
+.status.ASSIGNED  { background: #dbeafe; color: #1e40af; }
+.status.COMPLETED { background: #fee2e2; color: #991b1b; }
 
 .job-footer {
   display: flex;
@@ -165,6 +167,8 @@ button,
   color: #fff;
   border: none;
   cursor: pointer;
+  font-weight: 600;
+  width: auto;
 }
 
 .apply-btn.disabled {
@@ -173,7 +177,7 @@ button,
   cursor: not-allowed;
 }
 
-/* ================= PROFILE (WOW) ================= */
+/* ================= PROFILE ================= */
 .profile-page {
   display: flex;
   justify-content: center;
@@ -181,7 +185,6 @@ button,
   padding: 40px 16px;
   min-height: calc(100vh - 160px);
 }
-
 
 .profile-card {
   width: 100%;
@@ -206,46 +209,45 @@ button,
   border-radius: 12px;
   padding: 16px;
   border: 1px solid #e5e7eb;
+  margin-top: 16px;
 }
+
 .profile-form form {
   display: flex;
   flex-direction: column;
-  gap: 16px;   /* ⭐ THIS IS THE MAIN FIX */
+  gap: 16px;
 }
 
 .profile-form input,
-.profile-form select {
-  height: 48px;
+.profile-form select,
+.profile-form textarea {
+  height: auto;
   padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
   font-size: 15px;
 }
-.profile-form button {
-  margin-top: 12px;
-}
-
 
 /* ================= FOOTER ================= */
-footer {
-  margin-top: 40px;
+footer { margin-top: 40px; }
+
+/* ================= ANIMATION ================= */
+/* ✅ NEW: moved here from WelcomePopup.jsx where it was injected via document.createElement */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 /* ================= MOBILE ================= */
-/* Desktop */
 @media (min-width: 769px) {
-  .menu-btn {
-    display: none;
-  }
+  .menu-btn { display: none; }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
-  nav {
-    display: none;
-  }
+  nav { display: none; }
+  .menu-btn { display: block; }
 
-  .menu-btn {
-    display: block;
+  .profile-card {
+    grid-template-columns: 1fr;
   }
 }
